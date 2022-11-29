@@ -3,8 +3,10 @@ package me.zilzu.springboot.config.auth.dto;
 import lombok.Getter;
 import me.zilzu.springboot.domain.user.User;
 
+import java.io.Serializable;
+
 @Getter
-public class SessionUser {
+public class SessionUser implements Serializable {
     private String name;
     private String email;
     private String picture;

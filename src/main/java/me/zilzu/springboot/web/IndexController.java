@@ -1,6 +1,6 @@
 package me.zilzu.springboot.web;
 
-import lombok.RequiredArgsConstructor;
+import me.zilzu.springboot.config.auth.LoginUser;
 import me.zilzu.springboot.config.auth.dto.SessionUser;
 import me.zilzu.springboot.domain.service.PostsService;
 import org.springframework.stereotype.Controller;
@@ -11,16 +11,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequiredArgsConstructor
 public class IndexController {
 
     private final PostsService postsService;
     private final HttpSession httpSession;
 
+    public IndexController(PostsService postsService,
+                           HttpSession httpSession) {
+        this.postsService = postsService;
+        this.httpSession = httpSession;
+    }
+
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) {
         model.addAttribute("posts", postsService.findAllDesc());
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+//        SessionUser user = (SessionUser) httpSession.getAttribute("user");  // @LoginUser 로 대체되었다.
 
         if (user != null) {
             model.addAttribute("userName", user.getName());
